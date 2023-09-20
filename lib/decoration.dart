@@ -25,29 +25,25 @@ class My_Decoration extends StatelessWidget {
           ),
         ],
       ),
-      body:  Padding(
+      body: Padding(
         padding: const EdgeInsets.all(16.0),
-
-        child:  Column(
-           
+        child: Column(
           children: [
             //MAIN CARD
-            
+
             SizedBox(
               width: double.infinity,
               child: Card(
-               shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10),),
-               ),
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                ),
                 elevation: 15,
-
-                
                 child: ClipRRect(
-                  borderRadius:const BorderRadius.all(Radius.circular(10)),
-
+                  borderRadius: const BorderRadius.all(Radius.circular(10)),
                   child: BackdropFilter(
-                    filter:ImageFilter.blur(sigmaX: 2,sigmaY: 5),
-                
+                    filter: ImageFilter.blur(sigmaX: 2, sigmaY: 5),
                     child: const Padding(
                       padding: EdgeInsets.all(15.0),
                       child: Column(
@@ -59,19 +55,11 @@ class My_Decoration extends StatelessWidget {
                               color: Colors.white,
                               fontWeight: FontWeight.bold,
                             ),
-                            
-                            
-                            
                           ),
-                            
-                        
-                            
-                          Icon(Icons.cloud,
-                          size: 60,
-                          
+                          Icon(
+                            Icons.cloud,
+                            size: 60,
                           ),
-                            
-                          
                           Text(
                             "Rain",
                             style: TextStyle(
@@ -87,13 +75,12 @@ class My_Decoration extends StatelessWidget {
                 ),
               ),
             ),
-          
+
             //weather card
             const Placeholder(
               fallbackHeight: 150,
             ),
-          
-            
+
             //additional feature
             const Placeholder(
               fallbackHeight: 150,
