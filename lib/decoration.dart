@@ -1,6 +1,8 @@
 // ignore: unused_import
 import 'dart:ui';
 import 'package:flutter/material.dart';
+import 'package:new_next/additional_info_colum.dart';
+import 'package:new_next/weather_forecast.dart';
 
 // ignore: camel_case_types
 class My_Decoration extends StatelessWidget {
@@ -76,14 +78,64 @@ class My_Decoration extends StatelessWidget {
               ),
             ),
 
+            const SizedBox(
+              height: 15,
+            ),
+
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Weather Forecast",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+
+            const SizedBox(
+              height: 10,
+            ),
+
             //weather card
-            const Placeholder(
-              fallbackHeight: 150,
+            const SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+                children: [
+                  ForecastCard(),
+                  ForecastCard(),
+                  ForecastCard(),
+                  ForecastCard(),
+                  ForecastCard(),
+                ],
+              ),
+            ),
+
+            const SizedBox(
+              height: 15,
             ),
 
             //additional feature
-            const Placeholder(
-              fallbackHeight: 150,
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Additional Info",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 22,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ),
+
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Additional_info_column(),
+                Additional_info_column(),
+                Additional_info_column(),
+              ],
             ),
           ],
           //main_card
@@ -92,3 +144,6 @@ class My_Decoration extends StatelessWidget {
     );
   }
 }
+
+
+//start at 14.25
