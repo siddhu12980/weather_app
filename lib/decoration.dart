@@ -2,6 +2,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:new_next/additional_info_colum.dart';
+import 'package:new_next/main_card.dart';
 import 'package:new_next/weather_forecast.dart';
 
 // ignore: camel_case_types
@@ -48,30 +49,7 @@ class My_Decoration extends StatelessWidget {
                     filter: ImageFilter.blur(sigmaX: 2, sigmaY: 5),
                     child: const Padding(
                       padding: EdgeInsets.all(15.0),
-                      child: Column(
-                        children: [
-                          Text(
-                            "400F",
-                            style: TextStyle(
-                              fontSize: 32,
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Icon(
-                            Icons.cloud,
-                            size: 60,
-                          ),
-                          Text(
-                            "Rain",
-                            style: TextStyle(
-                              fontSize: 32,
-                              color: Colors.white,
-                              fontWeight: FontWeight.normal,
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: Mian_Card(),
                     ),
                   ),
                 ),
@@ -103,11 +81,31 @@ class My_Decoration extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  ForecastCard(),
-                  ForecastCard(),
-                  ForecastCard(),
-                  ForecastCard(),
-                  ForecastCard(),
+                  ForecastCard(
+                    time: "10:00",
+                    icon: Icons.cloud,
+                    temp: "200K",
+                  ),
+                  ForecastCard(
+                    time: "10:00",
+                    icon: Icons.sunny,
+                    temp: "240K",
+                  ),
+                  ForecastCard(
+                    time: "11:00",
+                    icon: Icons.water,
+                    temp: "315K",
+                  ),
+                  ForecastCard(
+                    time: "12:00",
+                    icon: Icons.air,
+                    temp: "206K",
+                  ),
+                  ForecastCard(
+                    time: "1:00",
+                    icon: Icons.thunderstorm,
+                    temp: "125K",
+                  ),
                 ],
               ),
             ),
@@ -132,9 +130,21 @@ class My_Decoration extends StatelessWidget {
             const Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                Additional_info_column(),
-                Additional_info_column(),
-                Additional_info_column(),
+                Additional_info_column(
+                  icon: Icons.water_drop,
+                  label: "Humidity",
+                  value: "120",
+                ),
+                Additional_info_column(
+                  icon: Icons.air,
+                  label: "Wind Speed",
+                  value: "7.6",
+                ),
+                Additional_info_column(
+                  icon: Icons.beach_access,
+                  label: "Pressure",
+                  value: "1000",
+                ),
               ],
             ),
           ],
@@ -144,6 +154,3 @@ class My_Decoration extends StatelessWidget {
     );
   }
 }
-
-
-//start at 14.25

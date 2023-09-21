@@ -1,34 +1,37 @@
-
 import 'package:flutter/material.dart';
 
 // ignore: camel_case_types
 class Additional_info_column extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final String value;
+
   const Additional_info_column({
     super.key,
+    required this.icon,
+    required this.label,
+    required this.value,
   });
 
   @override
   Widget build(BuildContext context) {
-    return const
-    
-     Column(
+    return Column(
       children: [
-        SizedBox(height: 10),
-        Icon(Icons.water_drop_rounded, size: 25),
-        SizedBox(height: 10),
-
+        const SizedBox(height: 15),
+        Icon(icon, size: 25),
+        const SizedBox(height: 10),
         Text(
-          "Humidity",
-          style: TextStyle(
+          label,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
             fontWeight: FontWeight.normal,
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
-          "94",
-          style: TextStyle(
+          value,
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -38,4 +41,3 @@ class Additional_info_column extends StatelessWidget {
     );
   }
 }
-
