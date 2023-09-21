@@ -14,7 +14,8 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(
-        useMaterial3: true,
+        useMaterial3: true, //use .copywith( appbartheme: appbarthem.data)
+        
       ),
       home: const My_Decoration() ,
     );
