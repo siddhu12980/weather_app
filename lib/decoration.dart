@@ -102,7 +102,6 @@ class My_Decoration extends StatelessWidget {
             const SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
-               
                 children: [
                   ForecastCard(),
                   ForecastCard(),
@@ -136,8 +135,6 @@ class My_Decoration extends StatelessWidget {
                 Additional_info_column(),
                 Additional_info_column(),
                 Additional_info_column(),
-               
-                
               ],
             ),
           ],
