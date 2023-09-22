@@ -4,10 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:new_next/additional_info_colum.dart';
 import 'package:new_next/main_card.dart';
 import 'package:new_next/weather_forecast.dart';
+//import 'package:http/http.dart' as http;
 
 // ignore: camel_case_types
 class My_Decoration extends StatelessWidget {
-  const My_Decoration({super.key});
+  const My_Decoration({super.key
+
+  // future getCurrentWeather() async {
+  //   http.get(
+  //     uri.pr 
+  //   )
+
+  // }
+  
+  });
 
   @override
   Widget build(BuildContext context) {
