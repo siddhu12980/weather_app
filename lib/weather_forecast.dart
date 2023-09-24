@@ -28,7 +28,10 @@ class ForecastCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.white,
                 fontSize: 18,
+                
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 10),
             Icon(icon, size: 25),

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:new_next/additional_info_colum.dart';
 
 import 'package:new_next/secret.dart';
@@ -20,11 +21,12 @@ class My_Decoration extends StatefulWidget {
 
 // ignore: camel_case_types
 class _My_DecorationState extends State<My_Decoration> {
+  late Future<Map<String, dynamic>> weather;
   double temp = 0;
   // ignore: non_constant_identifier_names
 
   // ignore: empty_constructor_bodies
-  Future<Map <String,dynamic>> getCurrentWeather() async {
+  Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
       String cityName = "London";
 
@@ -44,7 +46,14 @@ class _My_DecorationState extends State<My_Decoration> {
       throw e.toString();
     }
   }
-
+ 
+ @override
+  void initState() {
+      super.initState();
+    weather = getCurrentWeather();
+    
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -59,26 +68,33 @@ class _My_DecorationState extends State<My_Decoration> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              setState(() {
+
+                weather=getCurrentWeather();//reinilizating weather
+              });
+            },
             icon: const Icon(Icons.refresh),
           ),
         ],
       ),
       body: FutureBuilder(
-        future: getCurrentWeather(),
+        future: weather, //now we are not calling function we are just calling var so we dont have to rebuild ui every refresh clicked
         builder: (context, snapshot) {
-   
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator.adaptive());
           }
 
-          if (snapshot.hasError){
+          if (snapshot.hasError) {
             return Center(child: (Text(snapshot.error.toString())));
           }
 
-          final data=snapshot.data!;
-          final currentTemp=temp = data['list'][0]["main"]["temp"];
-
+          final data = snapshot.data!;
+          final currentTemp = data['list'][0]["main"]["temp"];
+          final currentSky = data['list'][0]["weather"][0]["main"];
+          final pressure = data['list'][0]["main"]["pressure"];
+          final humidity = data['list'][0]["main"]["humidity"];
+          final wind = data['list'][0]["wind"]["speed"];
 
           return Padding(
             padding: const EdgeInsets.all(16.0),
@@ -99,7 +115,7 @@ class _My_DecorationState extends State<My_Decoration> {
                       borderRadius: const BorderRadius.all(Radius.circular(10)),
                       child: BackdropFilter(
                         filter: ImageFilter.blur(sigmaX: 2, sigmaY: 5),
-                        child:  Padding(
+                        child: Padding(
                           padding: const EdgeInsets.all(15.0),
                           child: Column(
                             children: [
@@ -111,13 +127,15 @@ class _My_DecorationState extends State<My_Decoration> {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const Icon(
-                                Icons.cloud,
-                                size: 60,
+                              Icon(
+                                currentSky == "Clouds" || currentSky == "Rain"
+                                    ? Icons.cloud
+                                    : Icons.sunny,
+                                size: 65,
                               ),
-                             const Text(
-                                "Rain",
-                                style: TextStyle(
+                              Text(
+                                "$currentSky",
+                                style: const TextStyle(
                                   fontSize: 32,
                                   color: Colors.white,
                                   fontWeight: FontWeight.normal,
@@ -138,7 +156,7 @@ class _My_DecorationState extends State<My_Decoration> {
                 const Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
-                    "Weather Forecast",
+                    "Hourly Forecast",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 22,
@@ -152,41 +170,43 @@ class _My_DecorationState extends State<My_Decoration> {
                 ),
 
                 //weather card
-                const SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      ForecastCard(
-                        time: "10:00",
-                        icon: Icons.cloud,
-                        temp: "200K",
-                      ),
-                      ForecastCard(
-                        time: "10:00",
-                        icon: Icons.sunny,
-                        temp: "240K",
-                      ),
-                      ForecastCard(
-                        time: "11:00",
-                        icon: Icons.water,
-                        temp: "315K",
-                      ),
-                      ForecastCard(
-                        time: "12:00",
-                        icon: Icons.air,
-                        temp: "206K",
-                      ),
-                      ForecastCard(
-                        time: "1:00",
-                        icon: Icons.thunderstorm,
-                        temp: "125K",
-                      ),
-                    ],
-                  ),
-                ),
+                // SingleChildScrollView(
+                //   scrollDirection: Axis.horizontal,
+                //   child: Row(
+                //     children: [
+                //       for (int i = 0; i <= 10; i++)    USE FOR()...[  ] instead of for() {}
+                //         ForecastCard(
+                //           time: data['list'][i]['dt'].toString(),
+                //           icon:data['list'][i]["weather"][0]["main"]=="Clouds" || data['list'][i]["weather"][0]["main"]=="Rain" ? Icons.cloud : Icons.sunny ,
+                //           temp: data["list"][i]["main"]["temp"].toString(),
+                //         ),
+                //     ],
+                //   ),
+                // ),
 
-                const SizedBox(
-                  height: 15,
+//listvirw -colum_scrobable
+
+                SizedBox(
+                  height: 130,
+                  child: ListView.builder(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      final hourlyforecast = data['list'][index + 1];
+                      final hourlysky =
+                          data['list'][index + 1]["weather"][0]["main"];
+                      final hourlytemp =
+                          data['list'][index + 1]["main"]["temp"].toString();
+                      final times = DateTime.parse(hourlyforecast["dt_txt"]);
+                      return ForecastCard(
+                        time: DateFormat.Hm().format(times),
+                        icon: hourlysky == "Clouds" || hourlysky == "Rain"
+                            ? Icons.cloud
+                            : Icons.sunny,
+                        temp: hourlytemp,
+                      );
+                    },
+                  ),
                 ),
 
                 //additional feature
@@ -202,23 +222,23 @@ class _My_DecorationState extends State<My_Decoration> {
                   ),
                 ),
 
-                const Row(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Additional_info_column(
                       icon: Icons.water_drop,
                       label: "Humidity",
-                      value: "120",
+                      value: "$humidity",
                     ),
                     Additional_info_column(
                       icon: Icons.air,
                       label: "Wind Speed",
-                      value: "7.6",
+                      value: "$wind",
                     ),
                     Additional_info_column(
                       icon: Icons.beach_access,
                       label: "Pressure",
-                      value: "1000",
+                      value: "$pressure",
                     ),
                   ],
                 ),
