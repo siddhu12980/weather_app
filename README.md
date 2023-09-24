@@ -1,6 +1,8 @@
 # new_next
+## Weather App
 
-A new Flutter project.
+A new flutter project.
+It is a weather app.
 
 ## Getting Started
 
