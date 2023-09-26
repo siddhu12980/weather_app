@@ -2,14 +2,28 @@
 import 'dart:convert';
 
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:new_next/additional_info_colum.dart';
+// import 'drop_down.dart';
+// import 'package:new_next/drop_down.dart';
 
 import 'package:new_next/secret.dart';
 import 'package:new_next/weather_forecast.dart';
 import 'package:http/http.dart' as http;
+
+List<String> cityList = <String>[
+  'Delhi',
+  'Bengaluru',
+  'Karnataka',
+  'Patna',
+  'Kathmandu',
+  'Butwal',
+];
+const List<String> countryList = [
+  'india',
+  'nepal',
+];
 
 // ignore: camel_case_types
 class My_Decoration extends StatefulWidget {
@@ -22,17 +36,23 @@ class My_Decoration extends StatefulWidget {
 // ignore: camel_case_types
 class _My_DecorationState extends State<My_Decoration> {
   late Future<Map<String, dynamic>> weather;
+  // final String? cityName =const DropdownButtonExample().getSelectedCityName;
+  String selectedCity = cityList.first;
+  String selectedCountry = countryList.first;
+
   double temp = 0;
+
   // ignore: non_constant_identifier_names
 
   // ignore: empty_constructor_bodies
   Future<Map<String, dynamic>> getCurrentWeather() async {
     try {
-      String cityName = "London";
+      String cityName = selectedCity;
+      String countryname = selectedCountry;
 
       final res = await http.get(
         Uri.parse(
-            'https://api.openweathermap.org/data/2.5/forecast?q=$cityName,uk&APPID=$openweatherapikey'),
+            'https://api.openweathermap.org/data/2.5/forecast?q=$cityName,$countryname&APPID=$openweatherapikey'),
       );
 
       final data = jsonDecode(res.body);
@@ -46,14 +66,13 @@ class _My_DecorationState extends State<My_Decoration> {
       throw e.toString();
     }
   }
- 
- @override
+
+  @override
   void initState() {
-      super.initState();
+    super.initState();
     weather = getCurrentWeather();
-    
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,8 +89,7 @@ class _My_DecorationState extends State<My_Decoration> {
           IconButton(
             onPressed: () {
               setState(() {
-
-                weather=getCurrentWeather();//reinilizating weather
+                weather = getCurrentWeather(); //reinilizating weather
               });
             },
             icon: const Icon(Icons.refresh),
@@ -79,14 +97,15 @@ class _My_DecorationState extends State<My_Decoration> {
         ],
       ),
       body: FutureBuilder(
-        future: weather, //now we are not calling function we are just calling var so we dont have to rebuild ui every refresh clicked
+        future:
+            weather, //now we are not calling function we are just calling var so we dont have to rebuild ui every refresh clicked
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator.adaptive());
           }
 
           if (snapshot.hasError) {
-            return Center(child: (Text(snapshot.error.toString())));
+            return const Center(child: (Text("Server Error")));
           }
 
           final data = snapshot.data!;
@@ -101,6 +120,40 @@ class _My_DecorationState extends State<My_Decoration> {
             child: Column(
               children: [
                 //MAIN CARD
+
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    DropdownButton<String>(
+                      value: selectedCity,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCity = newValue!;
+                        });
+                      },
+                      items: cityList.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
+                    DropdownButton<String>(
+                      value: selectedCountry,
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          selectedCountry = newValue!;
+                        });
+                      },
+                      items: countryList.map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text('Country: $value'),
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                ),
 
                 SizedBox(
                   width: double.infinity,
